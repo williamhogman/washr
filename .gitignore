@@ -1,3 +1,8 @@
+#
+# Custom for washr
+#
+
+.venv/
 
 #
 # Pyhon gitignore
