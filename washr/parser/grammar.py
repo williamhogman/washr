@@ -36,7 +36,7 @@ block_end.setParseAction(lambda x: BlockEnd(x.name))
 
 theme_part << (variable ^ text ^ block_begin ^ block_end)
 
-theme = ZeroOrMore(theme_part)
+theme = ZeroOrMore(theme_part).leaveWhitespace()
 
 
 def parse(source):
