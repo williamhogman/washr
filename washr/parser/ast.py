@@ -32,3 +32,15 @@ def parse(tokens):
         raise ExpectedBlockEnd(blocks[-1].name)
 
     return root_node
+
+def stringify(block):
+    output = ""
+    for n in block.children:
+        if isinstance(n, BlockNode):
+            output += ("{Block:" + n.name + "}" + stringify(n) + "{/Block:" +
+                n.name + "}")
+        elif isinstance(n, VariableNode):
+            output += "{" + n.name + "}"
+        elif isinstance(n, TextNode):
+            output += n.content
+    return output
