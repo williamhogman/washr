@@ -5,8 +5,9 @@ BlockNode = namedtuple("BlockNode", ("name", "children"))
 VariableNode = namedtuple("VariableNode", ("name"))
 TextNode = namedtuple("TextNode", ("content"))
 
-class IllegalBlockEnd(Exception):
-    pass
+class ExpectedBlockEnd(Exception): pass
+class UnexpectedBlockEnd(Exception): pass
+class MismatchingBlockEnd(Exception): pass
 
 def parse(tokens):
     root_node = BlockNode("root", [])
@@ -20,9 +21,14 @@ def parse(tokens):
         elif type(t) == types.BlockStart:
             blocks.append(BlockNode(t.name, []))
         elif type(t) == types.BlockEnd:
-            if len(blocks) < 2 or t.name != blocks[-1].name:
-                raise IllegalBlockEnd
+            if len(blocks) == 1:
+                raise UnexpectedBlockEnd(t.name)
+            if t.name != blocks[-1].name:
+                raise MismatchingBlockEnd(t.name)
             last_block = blocks.pop()
             blocks[-1].children.append(last_block)
+
+    if len(blocks) != 1:
+        raise ExpectedBlockEnd(blocks[-1].name)
 
     return root_node
