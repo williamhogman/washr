@@ -4,4 +4,4 @@ Variable = namedtuple("Variable", ("name", "transformation"))
 
 BlockStart = namedtuple("BlockStart", ("name"))
 
-BlockEnd = namedtuple("BlockStart", ("name"))
+BlockEnd = namedtuple("BlockEnd", ("name"))
