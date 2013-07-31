@@ -27,7 +27,7 @@ transformation_keyword = (
 variable = (left_edge + Optional(transformation_keyword) +
     identifier.setResultsName("name") + right_edge)
 
-variable.setParseAction(lambda x: Variable(x.name, x.transformation))
+variable.setParseAction(lambda x: Variable(x.name, x.transformation or None))
 
 theme_part = Forward()
 
