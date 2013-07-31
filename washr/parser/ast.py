@@ -2,7 +2,7 @@ from collections import namedtuple
 from washr.parser import types
 
 BlockNode = namedtuple("BlockNode", ("name", "children"))
-VariableNode = namedtuple("VariableNode", ("name"))
+VariableNode = namedtuple("VariableNode", ("name", "transformation"))
 TextNode = namedtuple("TextNode", ("content"))
 
 class ExpectedBlockEnd(Exception): pass
@@ -17,7 +17,7 @@ def parse(tokens):
         if type(t) == str:
             blocks[-1].children.append(TextNode(t))
         elif type(t) == types.Variable:
-            blocks[-1].children.append(VariableNode(t.name))
+            blocks[-1].children.append(VariableNode(t.name, t.transformation))
         elif type(t) == types.BlockStart:
             blocks.append(BlockNode(t.name, []))
         elif type(t) == types.BlockEnd:
@@ -40,7 +40,7 @@ def stringify(block):
             output += ("{Block:" + n.name + "}" + stringify(n) + "{/Block:" +
                 n.name + "}")
         elif isinstance(n, VariableNode):
-            output += "{" + n.name + "}"
+            output += "{" + n.transformation + n.name + "}"
         elif isinstance(n, TextNode):
             output += n.content
     return output

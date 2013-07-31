@@ -1,6 +1,6 @@
 from collections import namedtuple
 
-Variable = namedtuple("Variable", ("name"))
+Variable = namedtuple("Variable", ("name", "transformation"))
 
 BlockStart = namedtuple("BlockStart", ("name"))
 

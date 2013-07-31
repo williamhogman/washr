@@ -1,4 +1,5 @@
-from pyparsing import Literal, CharsNotIn, alphas, Word, ZeroOrMore, Forward
+from pyparsing import (Literal, CharsNotIn, alphas, Word, ZeroOrMore, Forward,
+    Optional)
 
 from washr.parser.types import Variable, BlockStart, BlockEnd
 
@@ -17,10 +18,16 @@ text = CharsNotIn("{}")
 
 identifier = Word(alphas)
 
+transformation_keyword = (
+    Literal("Plaintext") ^ Literal("JS") ^
+    Literal("JSPlaintext") ^ Literal("URLEncoded") ^ Literal("RGB")
+).setResultsName("transformation")
 
-variable = left_edge + identifier.setResultsName("name") + right_edge
 
-variable.setParseAction(lambda x: Variable(x.name))
+variable = (left_edge + Optional(transformation_keyword) +
+    identifier.setResultsName("name") + right_edge)
+
+variable.setParseAction(lambda x: Variable(x.name, x.transformation))
 
 theme_part = Forward()
 
