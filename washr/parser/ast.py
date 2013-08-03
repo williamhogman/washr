@@ -44,14 +44,3 @@ def stringify(block):
         elif isinstance(n, TextNode):
             output += n.content
     return output
-
-def render(block, data):
-    output = ""
-    for n in block.children:
-        if isinstance(n, BlockNode):
-            output += render(n, data)
-        elif isinstance(n, VariableNode):
-            output += data.get(n.name, "")
-        elif isinstance(n, TextNode):
-            output += n.content
-    return output
