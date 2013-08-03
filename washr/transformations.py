@@ -9,7 +9,7 @@ except ImportError:
     from urllib.parse import urlencode
 
 def plaintext(value):
-    return cgi.escape(value, true)
+    return cgi.escape(value, True)
 
 def javascript(value):
     return json.dumps(value)

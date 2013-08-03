@@ -12,7 +12,7 @@ class MismatchingBlockEnd(Exception): pass
 def parse(tokens):
     root_node = BlockNode("root", [])
     blocks = [root_node]
-    
+
     for t in tokens:
         if type(t) == str:
             blocks[-1].children.append(TextNode(t))
@@ -41,6 +41,17 @@ def stringify(block):
                 n.name + "}")
         elif isinstance(n, VariableNode):
             output += "{" + n.transformation + n.name + "}"
+        elif isinstance(n, TextNode):
+            output += n.content
+    return output
+
+def render(block, data):
+    output = ""
+    for n in block.children:
+        if isinstance(n, BlockNode):
+            output += render(n, data)
+        elif isinstance(n, VariableNode):
+            output += data.get(n.name, "")
         elif isinstance(n, TextNode):
             output += n.content
     return output
