@@ -16,18 +16,9 @@ class PyTest(TestCommand):
         sys.exit(errno)
 
 
-with open("requirements.txt") as f:
-    required = list(f)
-
-with open("README.md") as f:
-    description = f.read()
-
-
 setup(
     name="washr",
     packages=find_packages(exclude=["tests"]),
     test_require=["pytest"],
-    install_requires=required,
     cmdclass={'test': PyTest},
-    description=description
 )
