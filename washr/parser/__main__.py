@@ -1,5 +1,6 @@
 from washr.parser import grammar, ast
 
+
 def test():
     test = "{Block:Foo}Blawg  blawg {fooo} lol{PlaintextTitle}{/Block:Foo}"
     tokens = grammar.parse(test)

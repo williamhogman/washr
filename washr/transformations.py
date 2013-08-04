@@ -8,17 +8,22 @@ try:
 except ImportError:
     from urllib.parse import urlencode
 
+
 def plaintext(value):
     return cgi.escape(value, True)
+
 
 def javascript(value):
     return json.dumps(value)
 
+
 def javascript_plaintext(value):
     return javascript(plaintext(value))
 
+
 def url(value):
     return urlencode(value)
+
 
 def rgb(value):
     assert value[0] == "#"
@@ -35,6 +40,7 @@ def rgb(value):
         return fmt.format(*vals)
     else:
         raise RuntimeError("wrong format")
+
 
 transformation_table = {
     "Plaintext": plaintext,

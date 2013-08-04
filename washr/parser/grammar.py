@@ -1,9 +1,8 @@
-from pyparsing import (Literal, CharsNotIn, alphas, Word, ZeroOrMore, Forward,
-    Optional)
+from pyparsing import (Literal, CharsNotIn, alphas,
+                       Word, ZeroOrMore, Forward,
+                       Optional)
 
 from washr.parser.types import Variable, BlockStart, BlockEnd
-
-import collections
 
 
 left_edge = Literal("{")
@@ -25,7 +24,7 @@ transformation_keyword = (
 
 
 variable = (left_edge + Optional(transformation_keyword) +
-    identifier.setResultsName("name") + right_edge)
+            identifier.setResultsName("name") + right_edge)
 
 variable.setParseAction(lambda x: Variable(x.name, x.transformation or None))
 

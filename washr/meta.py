@@ -18,6 +18,7 @@ meta_prefixes = [
 # Appearently we need to namespace this...
 meta_tag = "{http://www.w3.org/1999/xhtml}meta"
 
+
 # Returns an iterator consisting of two tuples (name, value)
 def _read_for_metas(root):
     # Iterate over all meta tags
@@ -25,9 +26,11 @@ def _read_for_metas(root):
         if "name" in el.attrib and "value" in el.attrib:
             yield (el.attrib["name"], el.attrib["value"])
 
+
 def _read_metas(src):
     document = html5lib.parse(src)
     return _read_for_metas(document)
+
 
 # Parses the name of a meta tag according to the tumblr format
 def _parse_name(name):
@@ -46,12 +49,14 @@ def _parse_name(name):
 
     return prefix, suffix
 
+
 def _expand_metas(metas):
     """Turns the (name, value) tuples into (type, name, value) tuples"""
     for name, value in metas:
         pname = _parse_name(name)
         if pname is not None:
             yield pname + (value,)
+
 
 def parse_variables(src):
     """Parse a document for tumblr meta tags
@@ -77,6 +82,7 @@ def parse_variables(src):
             res[n] = (t, v)
     return res
 
+
 def default_values(variables):
     """Takes a variables structure and creates a dict with name -> defaultvalue
 
@@ -93,7 +99,12 @@ def default_values(variables):
 
 
 if __name__ == '__main__':
-    res = parse_variables("<meta name='color:foo' value='derp' /><meta name='select:cat' value='tabby'><meta name='select:cat' value='black'>")
+    test = """
+    <meta name='color:foo' value='derp' />
+    <meta name='select:cat' value='tabby'>
+    <meta name='select:cat' value='black'>
+    """
+    res = parse_variables(test)
     print(res)
 
     print(default_values(res))

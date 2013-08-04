@@ -5,9 +5,18 @@ BlockNode = namedtuple("BlockNode", ("name", "children"))
 VariableNode = namedtuple("VariableNode", ("name", "transformation"))
 TextNode = namedtuple("TextNode", ("content"))
 
-class ExpectedBlockEnd(Exception): pass
-class UnexpectedBlockEnd(Exception): pass
-class MismatchingBlockEnd(Exception): pass
+
+class ExpectedBlockEnd(Exception):
+    """Raised when the parser expects a block end up can't find it"""
+
+
+class UnexpectedBlockEnd(Exception):
+    """Raised when the parser finds a BlockEnd when it doesn't expect it"""
+
+
+class MismatchingBlockEnd(Exception):
+    """When an BlockEnd with a name not matching the current block is found"""
+
 
 def parse(tokens):
     root_node = BlockNode("root", [])
@@ -33,14 +42,16 @@ def parse(tokens):
 
     return root_node
 
+
 def stringify(block):
     output = ""
     for n in block.children:
         if isinstance(n, BlockNode):
-            output += ("{Block:" + n.name + "}" + stringify(n) + "{/Block:" +
-                n.name + "}")
+            fmt = "{{Block:{0}}}{1}{{/Block:{0}}}"
+            output += fmt.format(n.name, stringify(n))
         elif isinstance(n, VariableNode):
-            output += "{" + n.transformation + n.name + "}"
+            fmt = "{{{0}{1}}}"
+            output += fmt.format(n.transformation or "", n.name)
         elif isinstance(n, TextNode):
             output += n.content
     return output

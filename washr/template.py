@@ -1,6 +1,7 @@
 from washr.parser import ast, grammar
 from washr.transformations import transformation_table
 
+
 class Template(object):
     def __init__(self, source):
         self._ast = ast.parse(grammar.parse(source))
