@@ -1,1 +1,2 @@
 pytest
+flake8>=2.0
