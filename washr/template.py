@@ -17,19 +17,19 @@ class State(object):
         return self.parent.get(name, default)
 
 def _render_inner(block, state):
-    output = ""
+    output = []
     for n in block:
         if isinstance(n, ast.BlockNode):
             value = state.get(n.name)
             if not value:
                 continue
             if isinstance(value, dict):
-                output += _render_inner(n.children, State(value, state))
+                output.append(_render_inner(n.children, State(value, state)))
             elif isinstance(value, list):
                 parts = [_render_inner(n.children, State(i, state)) for i in value]
-                output += ''.join(parts)
+                output.append(''.join(parts))
             else:
-                output += _render_inner(n.children, state) 
+                output.append(_render_inner(n.children, state))
         elif isinstance(n, ast.VariableNode):
             if not state.get(n.name):
                 continue
@@ -39,18 +39,15 @@ def _render_inner(block, state):
                 print n.transformation
                 value = transformation_table[n.transformation](value)
 
-            output += value
+            output.append(value)
         elif isinstance(n, ast.TextNode):
-            output += n.content
-    return output
+            output.append(n.content)
+
+    return ''.join(output)
 
 class Template(object):
     def __init__(self, source):
         self._ast = parser.parse(source)
 
-    def render(self, ctx={}, block=None, state=None):
-        if state is None:
-            state = State(ctx)
-        if block is None:
-            block = self._ast
-        return _render_inner(block.children, state)
+    def render(self, ctx={}):
+        return _render_inner(self._ast.children, State(ctx))
