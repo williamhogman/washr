@@ -1,4 +1,5 @@
 from washr import parser
+from washr.parser import ast
 from washr.transformations import transformation_table
 
 class State(object):
