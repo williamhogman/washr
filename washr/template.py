@@ -9,9 +9,11 @@ class State(object):
     def get(self, name, default=None):
         if name in self.ctx:
             return self.ctx[name]
-        if self.parent is not None and name in self.parent.ctx:
-            return self.parent.ctx[name]
-        return default
+
+        if self.parent is None:
+            return default
+
+        return self.parent.get(name, default)
 
 class Template(object):
     def __init__(self, source):
