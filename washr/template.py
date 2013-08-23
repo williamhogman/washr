@@ -1,4 +1,4 @@
-from washr.parser import ast, grammar
+from washr import parser
 from washr.transformations import transformation_table
 
 class State(object):
@@ -17,7 +17,7 @@ class State(object):
 
 class Template(object):
     def __init__(self, source):
-        self._ast = ast.parse(grammar.parse(source))
+        self._ast = parser.parse(source)
 
     def render(self, ctx={}, block=None, state=None):
         if state is None:
