@@ -16,6 +16,19 @@ class State(object):
 
         return self.parent.get(name, default)
 
+    def derive(self, ext):
+        return State(ext, self)
+
+def _render_variable_node(node, state):
+    if not state.get(node.name):
+        return None
+
+    value = str(state.get(node.name, ""))
+    if node.transformation is not None:
+        value = transformation_table[node.transformation](value)
+
+    return value
+
 def _render_inner(block, state):
     output = []
     for n in block:
@@ -24,22 +37,16 @@ def _render_inner(block, state):
             if not value:
                 continue
             if isinstance(value, dict):
-                output.append(_render_inner(n.children, State(value, state)))
+                output.append(_render_inner(n.children, state.derive(value)))
             elif isinstance(value, list):
-                parts = [_render_inner(n.children, State(i, state)) for i in value]
+                parts = [_render_inner(n.children, state.derive(i)) for i in value]
                 output.append(''.join(parts))
             else:
                 output.append(_render_inner(n.children, state))
         elif isinstance(n, ast.VariableNode):
-            if not state.get(n.name):
-                continue
-
-            value = str(state.get(n.name, ""))
-            if n.transformation is not None:
-                print n.transformation
-                value = transformation_table[n.transformation](value)
-
-            output.append(value)
+            value = _render_variable_node(n, state)
+            if value:
+                output.append(value)
         elif isinstance(n, ast.TextNode):
             output.append(n.content)
 
