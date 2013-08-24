@@ -47,7 +47,7 @@ def stringify(block):
     output = ""
     for n in block.children:
         if isinstance(n, BlockNode):
-            fmt = "{{Block:{0}}}{1}{{/Block:{0}}}"
+            fmt = "{{block:{0}}}{1}{{/block:{0}}}"
             output += fmt.format(n.name, stringify(n))
         elif isinstance(n, VariableNode):
             fmt = "{{{0}{1}}}"
