@@ -1,32 +1,16 @@
+from __future__ import print_function
 from washr.template import Template
+from washr import server
+import sys
 
-
-def test():
-    test = Template(
-        """{Block:Foo}
-            Blawg  blawg {fooo} lol{PlaintextTitle}
-            {Block:Test}
-                <p>{Content}</p>
-            {/Block:Test}
-            {Block:Posts}
-                <h1>{Title}</h1>
-            {/Block:Posts}
-        {/Block:Foo}"""
-    )
-    print(test.render({
-        "fooo": "Hello!",
-        "Title": "<h1>This totally is a test</h1>",
-        "Foo": True,
-        "Test": {
-            "Content": "Hello guys!"
-        },
-        "Posts": [{
-            "Title": "An article"
-        }, {
-            "Title": "Another article"
-        }]
-    }))
-
-
-if __name__ == '__main__':
-    test()
+if len(sys.argv) < 4:
+    print("Usage:", sys.argv[0], "<template_path> <api_key> <hostname>")
+    sys.exit(0)
+with open(sys.argv[1]) as f:
+    template = Template(f.read())
+server.setup(
+    sys.argv[2],
+    sys.argv[3],
+    template
+)
+server.app.run(port=8000)
