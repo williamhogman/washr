@@ -1,4 +1,4 @@
-from pyparsing import (Literal, CharsNotIn, alphas,
+from pyparsing import (Literal, CharsNotIn, alphanums,
                        Word, ZeroOrMore, Forward,
                        Optional)
 
@@ -9,13 +9,14 @@ left_edge = Literal("{")
 
 right_edge = Literal("}")
 
-block_token = Literal("Block:")
+block_token = Literal("block:")
 
 end_token = Literal("/")
 
 text = CharsNotIn("{}")
 
-identifier = Word(alphas)
+identifier = Word(alphanums + "-")
+#identifier = CharsNotIn("{}")
 
 transformation_keyword = (
     Literal("Plaintext") ^ Literal("JS") ^

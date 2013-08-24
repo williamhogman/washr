@@ -54,4 +54,4 @@ class Tumblr(object):
     def posts(self):
         url = posts_url.format(self.hostname)
         r = requests.get(url, params={"api_key": self.api_key})
-        posts = r.json()["response"]["posts"]
+        return r.json()["response"]["posts"]
