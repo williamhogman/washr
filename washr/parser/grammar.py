@@ -1,6 +1,6 @@
 from pyparsing import (Literal, CharsNotIn, alphanums,
                        Word, ZeroOrMore, Forward,
-                       Optional)
+                       Optional, CaselessLiteral)
 
 from washr.parser.types import Variable, BlockStart, BlockEnd
 
@@ -9,14 +9,13 @@ left_edge = Literal("{")
 
 right_edge = Literal("}")
 
-block_token = Literal("block:")
+block_token = CaselessLiteral("block:")
 
 end_token = Literal("/")
 
 text = CharsNotIn("{}")
 
 identifier = Word(alphanums + "-")
-#identifier = CharsNotIn("{}")
 
 transformation_keyword = (
     Literal("Plaintext") ^ Literal("JS") ^
