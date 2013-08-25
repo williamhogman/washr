@@ -14,7 +14,7 @@ parser_fixtures = {
     "Empty {} is not a var": ("{}", ["{}"]),
     "Lone {": ("{", ["{"]),
     "Lone }": ("}", ["}"]),
-    "Block: by itself": ("Block:", ["Block:"]),
+    "block: by itself": ("block:", ["block:"]),
     "Lone :": (":", [":"]),
     "Variable foo": ("{foo}", [var_foo]),
     "Double wrapped in {}": ("{{foo}}", ["{", var_foo, "}"]),
@@ -25,7 +25,7 @@ parser_fixtures = {
     "Inconsistent caps block": ("{bLocK:baz}", [block_baz]),
     "Inconsistent caps block end": ("{/bLocK:baz}", [block_end_baz]),
     "complete block": ("{Block:baz}{/block:baz}", [block_baz, block_end_baz]),
-    "complete block with contents": ("{Block:baz}foo{/Block:baz}", [block_baz, "foo", block_end_baz]),
+    "complete block with contents": ("{block:baz}foo{/block:baz}", [block_baz, "foo", block_end_baz]),
 }
 
 parser_f_ids = parser_fixtures.keys()

@@ -70,7 +70,7 @@ def simple_tree():
 
 @pytest.fixture
 def simple_tree_str():
-    return "{Block:Foo}Hello{/Block:Foo}"
+    return "{block:Foo}Hello{/block:Foo}"
 
 
 def test_simple_tree(simple_tree_tokens, simple_tree):
