@@ -25,6 +25,8 @@ parser_fixtures = {
     "Inconsistent caps block": ("{bLocK:baz}", [block_baz]),
     "Inconsistent caps block end": ("{/bLocK:baz}", [block_end_baz]),
     "complete block": ("{block:baz}{/block:baz}", [block_baz, block_end_baz]),
+    "complete block with contents": ("{block:baz}foo{/block:baz}", [block_baz, "foo", block_end_baz]),
+    "complete capital block": ("{Block:baz}{/Block:baz}", [block_baz, block_end_baz]),
 }
 
 parser_f_ids = parser_fixtures.keys()
