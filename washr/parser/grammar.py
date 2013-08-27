@@ -1,5 +1,4 @@
-from pyparsing import (Literal, CharsNotIn, alphanums,
-                       Word, ZeroOrMore, Forward,
+from pyparsing import (Literal, alphanums, Word, ZeroOrMore, Forward,
                        Optional, CaselessLiteral)
 
 from washr.parser.types import Variable, BlockStart, BlockEnd
@@ -12,8 +11,6 @@ right_edge = Literal("}")
 block_token = CaselessLiteral("block:")
 
 end_token = Literal("/")
-
-text = CharsNotIn("{}")
 
 identifier = Word(alphanums + "-")
 
