@@ -24,8 +24,7 @@ parser_fixtures = {
     "End block": ("{/block:baz}", [block_end_baz]),
     "Inconsistent caps block": ("{bLocK:baz}", [block_baz]),
     "Inconsistent caps block end": ("{/bLocK:baz}", [block_end_baz]),
-    "complete block": ("{Block:baz}{/block:baz}", [block_baz, block_end_baz]),
-    "complete block with contents": ("{block:baz}foo{/block:baz}", [block_baz, "foo", block_end_baz]),
+    "complete block": ("{block:baz}{/block:baz}", [block_baz, block_end_baz]),
 }
 
 parser_f_ids = parser_fixtures.keys()
@@ -34,6 +33,6 @@ parser_f_ids = parser_fixtures.keys()
 @pytest.mark.parametrize(("inp", "exp"), parser_fixtures.values(), ids=parser_f_ids)
 def test_grammar_quirks(inp, exp):
     res = grammar.parse(inp)
-
+    assert len(res) == len(exp)
     for res_part, exp_part in zip(res, exp):
         assert res_part == exp_part

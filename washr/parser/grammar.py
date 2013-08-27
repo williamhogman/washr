@@ -40,10 +40,21 @@ block_end = left_edge + end_token + block_ident + right_edge
 
 block_end.setParseAction(lambda x: BlockEnd(x.name))
 
-theme_part << (variable ^ text ^ block_begin ^ block_end)
+theme_part << (variable ^ block_begin ^ block_end)
 
 theme = ZeroOrMore(theme_part).leaveWhitespace()
 
 
 def parse(source):
-    return theme.parseString(source)
+    tokens = [source]
+    last_e = 0
+    for t, s, e in theme.scanString(source):
+        tokens[-1], subsource = tokens[-1][:s-last_e], tokens[-1][e-last_e:]
+        if len(tokens[-1]) < 1:
+            tokens.pop(-1)
+        tokens += list(t)
+        if len(subsource) > 0:
+            tokens.append(subsource)
+        last_e = e
+
+    return tokens
